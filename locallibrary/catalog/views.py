@@ -23,13 +23,12 @@ def index(request):
 class BookListView(generic.ListView):
     model = Book
 
-    def get_queryset(self):
-        return Book.objects.filter(title__icontains='war')[:5]
+    def get(self, *args, **kwargs):
+        context = {
+            'books': Book.objects.all()
+        }
+        return render(self.request, 'catalog/book_list.html', context=context)
 
-    def get_context_data(self, **kwargs):
-        context = super(BookListView, self).get_context_data(**kwargs)
-        context['some_data'] = 'This is just some data'
-        return context
 
 
 class BookDetailView(generic.DetailView):
